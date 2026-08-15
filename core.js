@@ -2,17 +2,18 @@
 const $=s=>document.querySelector(s), canvas=$("#gameCanvas"), ctx=canvas.getContext("2d");
 const home=$("#home"), intro=$("#introLevel"), game=$("#game"), hud=$("#hud"), overlay=$("#resultOverlay"), final=$("#final");
 const metric=$("#metric"), livesEl=$("#lives"), stageTitle=$("#stageTitle"), tip=$("#tip"), joy=$("#joy"), stick=$("#stick"), action=$("#action");
-const playerImg=new Image(); playerImg.src="profile.svg?v=4";
+const playerImg=new Image(); playerImg.src="profile.svg?v=8";
+const bossImg=new Image(); bossImg.src="boss.jpg?v=8";
 let W=0,H=0,DPR=1, raf=0, active=false, level=1, state=null, last=0;
 let unlocked=Math.max(1,Math.min(6,+localStorage.getItem("amelieUnlocked")||1));
 const taunts=["Questa era di riscaldamento.","Okay, ritentiamo.","Amelie… quasi.","Musino ha visto tutto, ma giudica poco.","Un altro tentativo e ci siamo.","Va bene, questa gliela concediamo.","Riprova, che eri vicina.","Il gioco per un attimo si è sentito forte."];
 const info={
 1:{title:"Caccia ai bacini",desc:"Prendi 💋 e 🌹, lascia stare i 💔 e fai abbastanza punti prima che finisca il tempo.",rules:[["❤️","3 vite"],["14","punti per vincere"],["💔","quello meglio non toccarlo"]]},
-2:{title:"Schiva i bacini",desc:"Muoviti col joystick a destra e resisti 18 secondi ai 💋 che arrivano dai bordi.",rules:[["🕹️","joystick a destra"],["18s","resisti fino alla fine"],["❤️","3 colpi e riprovi"]]},
+2:{title:"Schiva i bacini",desc:"Muovi Amelie col joystick a destra e resisti 18 secondi ai 💋. La fascia in basso è riservata ai comandi, quindi si gioca sopra quella linea.",rules:[["🕹️","joystick a destra"],["⬆️","resta sopra la zona comandi"],["❤️","3 colpi e riprovi"]]},
 3:{title:"Tempismo",desc:"Tocca lo schermo quando l'indicatore passa nella zona rosa. Cinque centri e hai finito.",rules:[["👆","tocca lo schermo"],["5×","cinque centri"],["❤️","tre errori massimi"]]},
 4:{title:"Memoria",desc:"Guarda i simboli accendersi e ripeti la sequenza. Se lo stesso simbolo compare due volte, lo vedrai lampeggiare due volte.",rules:[["✨","guarda bene"],["7","sette round"],["❤️","3 errori totali"]]},
 5:{title:"Labirinto del cuore",desc:"Porta ❤️ fino all'uscita. Niente timer: prenditi il tempo che serve e cerca il passaggio giusto.",rules:[["🕹️","joystick a destra"],["♾️","nessun limite di tempo"],["❤️","3 collisioni"]]},
-6:{title:"Cuore di Musino",desc:"Schiva i 💋, raccogli 3 ✨ dorate e solo allora premi COLPISCI. Joystick a destra, tasto a sinistra.",rules:[["✨","raccogline 3"],["💥","poi premi COLPISCI"],["❤️","3 vite per il boss"]]}
+6:{title:"Musino, il boss finale",desc:"Alla fine tocca affrontare Musino. Schiva i suoi 💋, raccogli 3 ✨ e quando COLPISCI si illumina sparagli un 💗. La fascia in basso resta libera per i comandi.",rules:[["✨","raccogline 3"],["💗","poi spara a Musino"],["⬆️","gioca sopra la zona comandi"]]}
 };
 function resize(){DPR=Math.min(2,devicePixelRatio||1);W=innerWidth;H=innerHeight;canvas.width=Math.floor(W*DPR);canvas.height=Math.floor(H*DPR);canvas.style.width=W+"px";canvas.style.height=H+"px";ctx.setTransform(DPR,0,0,DPR,0,0)}
 addEventListener("resize",resize);resize();
@@ -20,7 +21,7 @@ function screensOff(){document.querySelectorAll(".screen").forEach(x=>x.classLis
 function showHome(){stop();screensOff();home.classList.add("on");renderMap()}
 function renderMap(){const m=$("#homeMap");m.innerHTML="";for(let i=1;i<=6;i++){let p=document.createElement("div");p.className="pip"+(i<unlocked?" done":i===unlocked?" now":"");m.appendChild(p)}$("#startBtn").textContent=unlocked>1?"continua":"inizia"}
 function introLevel(n){stop();level=n;screensOff();intro.classList.add("on");$("#bigNum").textContent=n===6?"BOSS":String(n).padStart(2,"0");$("#introBrand").textContent=n===6?"SFIDA FINALE":"LIVELLO "+String(n).padStart(2,"0");$("#introTitle").textContent=info[n].title;$("#introDesc").textContent=info[n].desc;const r=$("#introRules");r.innerHTML="";info[n].rules.forEach(([a,b])=>{let d=document.createElement("div");d.className="rule";let cls="icon"+(String(a).length>3?" long":"");d.innerHTML='<div class="'+cls+'">'+a+'</div><div><b>'+b+'</b><br><span>'+ruleSub(a,b)+'</span></div>';r.appendChild(d)})}
-function ruleSub(a,b){if(b.includes("vite")||b.includes("errori")||b.includes("collisioni")||b.includes("colpi"))return "Se finiscono, riparti da questo livello.";if(b.includes("joystick"))return "Pensato per il pollice destro.";if(b.includes("nessun limite"))return "Qui puoi andare con calma.";if(b.includes("tempo"))return "Vai tranquilla, ma non troppo.";if(b.includes("round"))return "Ogni giro aggiunge qualcosa.";if(b.includes("raccogline"))return "Servono per caricare il colpo.";if(b.includes("COLPISCI"))return "Si illumina quando è pronto.";return "Regola semplice."}
+function ruleSub(a,b){if(b.includes("vite")||b.includes("errori")||b.includes("collisioni")||b.includes("colpi"))return "Se finiscono, riparti da questo livello.";if(b.includes("joystick"))return "Pensato per il pollice destro.";if(b.includes("zona comandi")||b.includes("resta sopra")||b.includes("gioca sopra"))return "Sotto quella linea ci sono i controlli.";if(b.includes("nessun limite"))return "Qui puoi andare con calma.";if(b.includes("tempo"))return "Vai tranquilla, ma non troppo.";if(b.includes("round"))return "Ogni giro aggiunge qualcosa.";if(b.includes("raccogline"))return "Servono per caricare il colpo.";if(b.includes("spara"))return "Il 💗 parte davvero verso Musino.";return "Regola semplice."}
 $("#startBtn").onclick=()=>introLevel(unlocked);$("#resetBtn").onclick=()=>{localStorage.removeItem("amelieUnlocked");localStorage.removeItem("amelieBest");unlocked=1;renderMap()};$("#playBtn").onclick=()=>startLevel(level);
 function setHUD(title,m=""){stageTitle.textContent=title;metric.textContent=m;hud.classList.add("on")}
 function setLives(n){livesEl.textContent="♥".repeat(Math.max(0,n))+"♡".repeat(Math.max(0,3-n))}
@@ -35,6 +36,8 @@ function txt(s,x,y,size=16,color="#fff",align="center",weight=800){ctx.fillStyle
 function emoji(s,x,y,size=42){ctx.save();ctx.font=size+'px "Apple Color Emoji","Segoe UI Emoji",sans-serif';ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText(s,x,y);ctx.restore()}
 function circle(x,y,r,c){ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fillStyle=c;ctx.fill()}
 function avatar(x,y,r,inv=0){ctx.save();ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.clip();if(playerImg.complete&&playerImg.naturalWidth)ctx.drawImage(playerImg,x-r,y-r,r*2,r*2);else{ctx.fillStyle="#f4d9e5";ctx.fillRect(x-r,y-r,r*2,r*2)}ctx.restore();ctx.beginPath();ctx.arc(x,y,r+2,0,Math.PI*2);ctx.strokeStyle=inv>0?"#ffffffaa":"#ffb1ca";ctx.lineWidth=3;ctx.stroke()}
+function bossAvatar(x,y,r,flash=0){ctx.save();ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.clip();if(bossImg.complete&&bossImg.naturalWidth)ctx.drawImage(bossImg,x-r,y-r,r*2,r*2);else{ctx.fillStyle="#2b1b24";ctx.fillRect(x-r,y-r,r*2,r*2);emoji("🙂",x,y,r*1.2)}ctx.restore();ctx.beginPath();ctx.arc(x,y,r+3,0,Math.PI*2);ctx.strokeStyle=flash>0?"#fff":"#ff8eb4";ctx.lineWidth=flash>0?5:3;ctx.stroke();circle(x,y,r+12,flash>0?"#ffd9e622":"#ff78a712")}
+function drawControlZone(){const y=H-146;ctx.save();ctx.fillStyle="#ffffff04";ctx.fillRect(0,y,W,H-y);ctx.strokeStyle="#ffffff18";ctx.setLineDash([5,7]);ctx.beginPath();ctx.moveTo(14,y);ctx.lineTo(W-14,y);ctx.stroke();ctx.setLineDash([]);txt("zona comandi",W/2,y+14,9,"#8f818c");ctx.restore()}
 function dist(a,b){return Math.hypot(a.x-b.x,a.y-b.y)}
 function pointerPos(e){const r=canvas.getBoundingClientRect(),p=e.touches?e.touches[0]:e;return{x:p.clientX-r.left,y:p.clientY-r.top}}
 let canvasHandler=null;function setCanvasTap(fn){if(canvasHandler)canvas.removeEventListener("pointerdown",canvasHandler);canvasHandler=e=>{e.preventDefault();fn(pointerPos(e),e)};canvas.addEventListener("pointerdown",canvasHandler,{passive:false})}

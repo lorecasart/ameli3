@@ -3,23 +3,81 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
-<meta name="theme-color" content="#0b0710">
+<meta name="theme-color" content="#09070c">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>Amelie // il giochino del Musino</title>
-<link rel="stylesheet" href="style.css?v=9">
+<title>Amelie // una cosa del Musino</title>
+<link rel="stylesheet" href="style.css?v=10">
 </head>
 <body>
 <div id="app">
-<div id="hud"><div class="hudrow"><div class="hudbox"><span id="stageTitle">LIVELLO 01</span></div><div class="hudbox"><span id="metric">0</span></div><div class="hudbox"><span id="lives">♥♥♥</span></div></div></div>
-<section class="screen center on" id="home"><div class="card"><div class="brand">PER AMELIE // UN GIOCHINO DEL MUSINO</div><h1>5 giochi nuovi.<br>1 portone.<br>Buona fortuna.</h1><p class="sub">Questa volta ogni livello funziona in modo diverso. Si può perdere, si può riprovare e alla fine c’è una cosa che riconoscerai.</p><div class="levelmap" id="homeMap"></div><div class="row"><button class="btn" id="startBtn">inizia</button><button class="btn ghost" id="resetBtn">azzera progressi</button></div></div></section>
-<section class="screen center" id="introLevel"><div class="num" id="bigNum">01</div><div class="card"><div class="brand" id="introBrand">LIVELLO 01</div><h2 id="introTitle"></h2><p class="sub" id="introDesc"></p><div class="rules" id="introRules"></div><button class="btn" id="playBtn" style="width:100%;margin-top:20px">gioca</button></div></section>
-<div class="game" id="game"><canvas id="gameCanvas"></canvas><div class="joystick" id="joy"><div class="stick" id="stick"></div></div><button class="action" id="action">COLPISCI</button><div class="tip" id="tip"></div></div>
-<div class="overlay" id="resultOverlay"><div class="result"><div class="status" id="resultStatus">RIPROVA</div><h2 id="resultTitle">Quasi.</h2><p id="resultText"></p><button class="btn" id="resultBtn">riprova</button></div></div>
-<section class="screen" id="final"><div class="finalPhoto"></div><div class="finalCopy"><div class="gamecomplete">COMPLETATO</div><h2>Hai aperto il portone.<br>Il resto lo sai.</h2><p>Ti amo, cosina.</p><div class="finalBonus"><small>BONUS FINALE SBLOCCATO</small>Una giornata insieme scelta interamente da Amelie.</div></div></section>
+  <div id="bgGlow"></div>
+  <div id="hud">
+    <div class="hudrow">
+      <div class="hudchip"><span id="stageTitle">LIVELLO 01</span></div>
+      <div class="hudchip metric"><span id="metric">0</span></div>
+      <div class="hudchip lives"><span id="lives">♥♥♥</span></div>
+    </div>
+    <div id="tip" class="tip"></div>
+  </div>
+
+  <section class="screen center on" id="home">
+    <div class="homeWrap">
+      <div class="eyebrow">PER AMELIE // FATTO DAL MUSINO</div>
+      <h1>5 giochi.<br>1 finale.<br><span>Questa volta sul serio.</span></h1>
+      <p class="lead">Niente quiz e niente pulsanti finti. Ogni livello ha una meccanica diversa, si può perdere davvero e il gioco si ricorda dove sei arrivata.</p>
+      <div class="progressRail" id="homeMap"></div>
+      <div class="homeActions">
+        <button class="primary" id="startBtn">inizia</button>
+        <button class="secondary" id="resetBtn">azzera progressi</button>
+      </div>
+      <div class="tinyNote">Consiglio tecnico molto serio: giocalo con una mano libera.</div>
+    </div>
+  </section>
+
+  <section class="screen center" id="introLevel">
+    <div class="introCard">
+      <div class="introTop">
+        <div>
+          <div class="eyebrow" id="introBrand">LIVELLO 01</div>
+          <div class="bigNum" id="bigNum">01</div>
+        </div>
+        <div class="difficulty" id="difficulty">●○○</div>
+      </div>
+      <h2 id="introTitle"></h2>
+      <p class="lead" id="introDesc"></p>
+      <div class="rules" id="introRules"></div>
+      <button class="primary full" id="playBtn">gioca</button>
+    </div>
+  </section>
+
+  <div class="game" id="game">
+    <canvas id="gameCanvas"></canvas>
+    <div class="gestureHint" id="gestureHint"></div>
+  </div>
+
+  <div class="overlay" id="resultOverlay">
+    <div class="resultCard">
+      <div class="resultStatus" id="resultStatus">RIPROVA</div>
+      <h2 id="resultTitle">Quasi.</h2>
+      <p id="resultText"></p>
+      <button class="primary full" id="resultBtn">riprova</button>
+    </div>
+  </div>
+
+  <section class="screen" id="final">
+    <div class="finalPhoto"></div>
+    <div class="finalShade"></div>
+    <div class="finalCopy">
+      <div class="gamecomplete">COMPLETATO</div>
+      <h2>Hai finito tutto.<br>Io invece no.</h2>
+      <p>Ti amo, cosina.</p>
+      <div class="finalBonus"><small>BONUS FINALE SBLOCCATO</small>Una giornata insieme scelta interamente da Amelie.</div>
+    </div>
+  </section>
 </div>
-<script src="core.js?v=9"></script>
-<script src="games_v2.js?v=9"></script>
-<script src="boss_v2.js?v=9"></script>
+<script src="core_v3.js?v=10"></script>
+<script src="games_v3.js?v=10"></script>
+<script src="boss_v3.js?v=10"></script>
 </body>
 </html>

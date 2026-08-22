@@ -4,11 +4,28 @@ function l3(){
   metric.textContent='ROUND 1 / 5';
   let w=document.createElement('div');
   w.className='sequenceWrap';
+  w.style.touchAction='manipulation';
   w.innerHTML='<div class="sequenceCard"><div class="sequenceLabel">PREPARATI</div><div class="sequenceDisplay"></div><div class="sequencePrompt">la sequenza partirà tra poco</div></div><div class="sequenceDots"></div><div class="seqPad"><button data-k="U">↑</button><button data-k="L">←</button><button data-k="D">↓</button><button data-k="R">→</button></div>';
   stage.appendChild(w);
   let display=w.querySelector('.sequenceDisplay'),label=w.querySelector('.sequenceLabel'),prompt=w.querySelector('.sequencePrompt'),dots=w.querySelector('.sequenceDots'),buttons=[...w.querySelectorAll('.seqPad button')];
   const symbols={U:'↑',D:'↓',L:'←',R:'→'},keys=['U','D','L','R'];
-  let round=1,seq=[],input=[],locked=true,confirmRound4=false,playToken=0;
+  let round=1,seq=[],input=[],locked=true,confirmRound4=false,playToken=0,lastTouchEnd=0;
+
+  buttons.forEach(b=>{
+    b.style.touchAction='manipulation';
+    b.style.webkitTouchCallout='none';
+    b.style.userSelect='none';
+    b.style.webkitUserSelect='none';
+  });
+  on(w,'dblclick',e=>{e.preventDefault();e.stopPropagation()});
+  on(w,'touchend',e=>{
+    const now=Date.now();
+    if(now-lastTouchEnd<420)e.preventDefault();
+    lastTouchEnd=now;
+  },{passive:false});
+  on(w,'gesturestart',e=>e.preventDefault(),{passive:false});
+  on(w,'gesturechange',e=>e.preventDefault(),{passive:false});
+  on(w,'gestureend',e=>e.preventDefault(),{passive:false});
 
   function setButtons(enabled){
     buttons.forEach(b=>{b.disabled=!enabled;b.style.opacity=enabled?'1':'.42'});

@@ -3,21 +3,22 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
-<meta name="theme-color" content="#f6f6f2">
+<meta name="theme-color" content="#f3f4f8">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <title>Amelie</title>
-<link rel="stylesheet" href="style_v16.css?v=16">
+<link rel="stylesheet" href="style_v17.css?v=17">
 </head>
 <body>
-<div class="errorFlash" id="errorFlash"></div><div class="errorText" id="errorText"></div>
-<section class="screen center on home" id="home"><div class="page"><div class="brand">AMELIE</div><h1>Cinque sfide.<br>Una sorpresa.</h1><p>Completa i cinque livelli per arrivare alla fine.</p><div class="progress" id="progress"></div><div class="actions"><button class="btn primary" id="startBtn">INIZIA</button><button class="btn secondary" id="resetBtn">RESET</button></div></div></section>
-<section class="screen center intro" id="intro"><div class="introCard"><div class="introNo" id="introNo">LIVELLO 01</div><h2 id="introTitle">Continua</h2><p id="introDesc">Premi il pulsante per completare il livello.</p><button class="btn primary" id="playBtn">GIOCA</button></div></section>
+<div class="errorFlash" id="errorFlash"></div><div class="errorText" id="errorText"></div><div class="softToast" id="softToast"></div>
+<section class="screen center on home" id="home"><div class="page"><div class="brand">AMELIE</div><h1>Cinque sfide.<br><span>Una sorpresa.</span></h1><p>Completa i cinque livelli per arrivare alla fine.</p><div class="progress" id="progress"></div><div class="actions"><button class="btn primary" id="startBtn">INIZIA</button><button class="btn secondary" id="resetBtn">RESET</button></div></div></section>
+<section class="screen center intro" id="intro"><div class="introCard"><div class="introBadge" id="introNo">01</div><h2 id="introTitle">Continua</h2><p id="introDesc">Premi il pulsante per completare il livello.</p><button class="btn primary" id="playBtn">GIOCA</button></div></section>
 <div class="game" id="game"><div class="hud"><span id="stageLabel">LIVELLO 01</span><span id="metric">0</span></div><div class="stage" id="gameStage"><div class="hint" id="hint"></div></div></div>
 <div class="overlay" id="result"><div class="result"><h2 id="resultTitle">Completato</h2><p id="resultText"></p><button class="btn primary" id="resultBtn">CONTINUA</button></div></div>
-<section class="screen center" id="fakeWin"><div class="page winBox"><div class="trophy"><span>🏆</span></div><div class="brand">RISULTATO</div><h1>Hai vinto.</h1><p>Hai completato tutti e cinque i livelli.</p><button class="btn primary" id="claimBtn" style="margin-top:22px">VEDI PREMIO</button></div></section>
-<section class="screen center verify" id="verify"><div class="verifyBox"><h2>Controllo risultato…</h2><div class="log" id="log"><div>Livelli completati ✓</div><div>Vittoria registrata ✓</div><div>Premio disponibile ✓</div><div>Verifica finale…</div><div class="bad">RISULTATO MODIFICATO</div></div></div></section>
-<section class="screen" id="troll"><div class="trollBox"><div class="musinoRow"><img class="musino" src="boss.jpg?v=16" alt="Musino"><div class="crown">👑</div></div><h1>Pensavi di aver vinto?<br>HAHAHAHA.</h1><p>Invece no. Vince Musino.</p><div class="clause"><b>Piccolo dettaglio del regolamento</b><p>Il creatore del gioco può modificare il risultato finale. Comodissimo.</p></div><div class="desire"><b>PREMIO DI MUSINO</b><h2>Ora Amelie deve esaudire 1 desiderio di Musino. 🧞</h2><p>Desiderio ragionevole, consensuale e con diritto di veto.</p></div><button class="btn accept" id="acceptBtn">ACCETTO LA SCONFITTA</button><div class="softEnd" id="softEnd">Comunque hai vinto tu da quando sei diventata la mia cosina. Ma questo punto me lo tengo.</div></div></section>
-<script src="game_v16.js?v=16"></script>
+<section class="screen center" id="fakeWin"><div class="page winBox"><div class="trophy"><span>🏆</span></div><div class="brand">RISULTATO FINALE</div><h1>Hai vinto.</h1><p>Hai completato tutti e cinque i livelli.</p><button class="btn primary" id="claimBtn" style="margin-top:22px">SCOPRI IL PREMIO</button></div></section>
+<section class="screen center verify" id="verify"><div class="verifyBox"><div class="brand">VERIFICA PREMIO</div><h2>Controllo risultato…</h2><div class="log" id="log"><div>Livelli completati ✓</div><div>Punteggio registrato ✓</div><div>Premio disponibile ✓</div><div>Controllo regolamento…</div><div class="bad">Anomalia rilevata</div></div></div></section>
+<section class="screen center" id="override"><div class="overrideBox"><div class="overrideMini">RICALCOLO RISULTATO</div><div class="overrideTitle">Un momento.</div><div class="scoreFlip"><div class="scoreLine"><span>AMELIE</span><strong id="scoreAmelie">5</strong></div><div class="scoreLine musino"><span>MUSINO</span><strong id="scoreMusino">0</strong></div></div><div class="overrideStamp" id="overrideStamp">RISULTATO SOVRASCRITTO</div></div></section>
+<section class="screen" id="troll"><div class="trollBox"><div class="musinoHero"><img class="musino" src="boss.jpg?v=17" alt="Musino"><div class="crown">👑</div></div><div class="winnerPill">VINCITORE UFFICIALE</div><h1>Pensavi davvero<br>di aver vinto?</h1><div class="laugh">HAHAHAHA.</div><p>No. Vince Musino. La vittoria di Amelie è stata elegantemente annullata dal creatore del gioco.</p><div class="finalScore"><div><div class="name">AMELIE</div><strong>0</strong></div><div class="vs">—</div><div><div class="name">MUSINO</div><strong>1</strong></div></div><div class="desireMega"><div class="small">PREMIO UFFICIALE DI MUSINO</div><div class="one">1</div><h2>DESIDERIO<br>DI MUSINO</h2><p>Amelie dovrà esaudire un desiderio scelto da Musino. Un desiderio vero, non simbolico — purché ragionevole, consensuale e sempre con diritto di veto.</p><div class="seal">CLAUSOLA<br>ATTIVA</div></div><button class="btn accept" id="acceptBtn">ACCETTO LA SCONFITTA</button><div class="registered" id="registered">SCONFITTA REGISTRATA ✓</div><div class="softEnd" id="softEnd">Comunque hai vinto tu da quando sei diventata la mia cosina. Ma questo gioco l’ho fatto io, quindi questo punto è mio.</div></div></section>
+<script src="game_v17.js?v=17"></script>
 </body>
 </html>
